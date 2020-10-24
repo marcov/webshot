@@ -1,6 +1,6 @@
 ## Setup
 ```
-$ npm init
+$ npm install
 ```
 ## Usage
 ```

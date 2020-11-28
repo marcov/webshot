@@ -2,24 +2,20 @@
 
 set -euo pipefail
 
-declare -r phantomjs_pi_path="/home/pi/bin/phantomjs-2.0.1-development-linux-armv6l/bin/phantomjs"
+declare -r scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 declare -r webshot_tool="js/webshot.js"
 
-[ "$#" -ge 1 ] || { echo "Need destination path as argument"; exit -1; }
-dst_path="$1"
+[ "$#" -eq 2 ] || { echo -e "ERR: Invalid number of arguments.\n\nUSAGE: `basename $0` CONFIG-FILE DESTINATION-PATH"; exit -1; }
+configFile="$1"
+destinationPath="$2"
 
 #
-# Try to use phantomjs in path
+# Use phantomjs in path
 #
 phantomjs_bin="$(command -v phantomjs)"
+[ -x "$phantomjs_bin" ] || { echo "ERR: phantomjs tool could not be found"; exit -1; }
 
-#
-# If unavailable, try to use our raspi binary
-#
-if [ -z "$phantomjs_bin" ]; then
-	phantomjs_bin="$phantomjs_pi_path"
-	[ -x "$phantomjs_bin" ] || { echo "ERR: phantomjs tool could not be found"; exit -1; }
-fi
+cd "${scriptDir}"
+node ./js/run-webshot.js "${phantomjs_bin}" "${webshot_tool}" "${configFile}" "${destinationPath}"
 
-node js/run-webshot.js ${phantomjs_bin} ${webshot_tool} config.json ${dst_path}
 exit $?

@@ -1,8 +1,13 @@
 ## Setup
-```
-$ npm install
-```
+
+- Using Docker: NOTE: Dockerfile is for raspberry pi only a.t.m.
+
+OR
+
+- Manually:
+  * Install phantomjs, node
+  * Run `npm install`
+
 ## Usage
-```
-$ ./run.sh /dest/path
-```
+
+As shown by `./run.sh`

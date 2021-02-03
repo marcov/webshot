@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+export DISPLAY=:0
+export QT_QPA_PLATFORM='offscreen'
+
 declare -r scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 declare -r webshot_tool="js/webshot.js"
 

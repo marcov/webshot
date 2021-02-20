@@ -8,13 +8,11 @@
 var system = require('system');
 
 
-
 function usage() {
-    console.log("Usage: phantomjs " + system.args[0] + "json cfg");
+    console.log("Usage: phantomjs " + system.args[0] + " 'JSON-CFG-STRING'");
 }
 
 function getArgs() {
-
   if (system.args.length < 2 || system.args[1] === "-h" || system.args[1] === "--help") {
     usage();
     phantom.exit();
@@ -24,7 +22,6 @@ function getArgs() {
 }
 
 function takeShot(page, evalCode, outFile) {
-
   console.log("INFO: trying to evaluate : " + evalCode);
 
   if (evalCode && evalCode.length > 0) {
@@ -58,7 +55,6 @@ function getWebsite(cfg) {
                    width: cfg.size[0],
                    height: cfg.size[1]};
 
-
   page.onResourceRequested = function (request) {
     //console.log('Request ' + JSON.stringify(request, undefined, 4));
     console.log("+++ ask " + request.url);
@@ -66,7 +62,7 @@ function getWebsite(cfg) {
 
   page.onResourceReceived = function (response) {
     //console.log('Receive ' + JSON.stringify(response, undefined, 4));
-    console.log("--- rx " + response.url);
+    console.log("--- rcv " + response.url);
   };
 
   page.onLoadFinished = function () {
@@ -77,13 +73,11 @@ function getWebsite(cfg) {
 
   page.open(cfg.url, function (status) {
     if (status !== "success") {
-      console.log(">>> page open FAILED!");
+      console.log(">>> page open FAILED: " + status);
       phantom.exit();
     }
   });
-
 }
-
 
 function main() {
   var jsonCfg = getArgs();

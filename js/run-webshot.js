@@ -52,13 +52,22 @@ function main() {
   var jsonCfg = allArgs[2];
 
   jsonCfg.websites.forEach( (ws) => {
-    console.log("INFO: spawning phantomjs child process for "+ws.outFile);
+    if (!ws.Enabled) {
+        console.log("INFO: skipping " + ws.outFile);
+        return;
+    }
+
+    console.log("INFO: spawning phantomjs child process for " + ws.outFile);
+
     ws.outFile = jsonCfg.dstFolder + "/" + ws.outFile;
-    child_process.spawnSync(phantomJsExec, [phantomJsFile, JSON.stringify(ws)], {stdio: 'inherit'});
+    child_process.spawnSync(phantomJsExec,
+                            ['--ignore-ssl-errors=true',
+                             phantomJsFile,
+                             JSON.stringify(ws)],
+                            {stdio: 'inherit'});
   });
 
   console.log("INFO: done");
 }
 
 main();
-
